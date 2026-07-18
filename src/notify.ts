@@ -65,23 +65,19 @@ export default (async (_, options) => {
 
   return {
     event: async ({ event }) => {
-      log(`Event: ${event.type} ${JSON.stringify(event.properties)}`, debug);
-      const handlers: Record<string, () => void> = {
-        "session.status": () => {
-          const status = event.properties.status?.type;
-          if (status === "busy") {
-            state.reset();
-          }
-          if (shouldNotify(status, state)) {
-            notify(desktop, phone, debug);
-          }
-        },
-        "session.error": () => {
-          state.markCancelled();
-        },
-      };
+      log(`Event: ${event.type} ${JSON.stringify(event)}`, debug);
 
-      handlers[event.type]?.();
+      if (event.type === "session.status") {
+        const status = event.properties.status.type;
+        if (status === "busy") {
+          state.reset();
+        }
+        if (shouldNotify(status, state)) {
+          notify(desktop, phone, debug);
+        }
+      } else if (event.type === "session.error") {
+        state.markCancelled();
+      }
     },
   };
 }) satisfies Plugin;

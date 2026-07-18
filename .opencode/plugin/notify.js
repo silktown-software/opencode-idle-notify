@@ -92,22 +92,18 @@ var notify_default = (async (_, options) => {
   const state = createNotificationState();
   return {
     event: async ({ event }) => {
-      log(`Event: ${event.type} ${JSON.stringify(event.properties)}`, debug);
-      const handlers = {
-        "session.status": () => {
-          const status = event.properties.status?.type;
-          if (status === "busy") {
-            state.reset();
-          }
-          if (shouldNotify(status, state)) {
-            notify(desktop, phone, debug);
-          }
-        },
-        "session.error": () => {
-          state.markCancelled();
+      log(`Event: ${event.type} ${JSON.stringify(event)}`, debug);
+      if (event.type === "session.status") {
+        const status = event.properties.status.type;
+        if (status === "busy") {
+          state.reset();
         }
-      };
-      handlers[event.type]?.();
+        if (shouldNotify(status, state)) {
+          notify(desktop, phone, debug);
+        }
+      } else if (event.type === "session.error") {
+        state.markCancelled();
+      }
     }
   };
 });

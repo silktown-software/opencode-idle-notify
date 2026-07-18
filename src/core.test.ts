@@ -9,12 +9,12 @@ describe("findGSConnect", () => {
   });
 
   it("returns path when it exists on linux", () => {
-    const exists = (p: string) => p === GSCONNECT_PATHS.linux;
+    const exists = (p: string | Buffer | URL) => p === GSCONNECT_PATHS.linux;
     assert.equal(findGSConnect("linux", GSCONNECT_PATHS, exists), GSCONNECT_PATHS.linux);
   });
 
   it("returns local path when global does not exist", () => {
-    const exists = (p: string) => p === GSCONNECT_PATHS.linuxLocal;
+    const exists = (p: string | Buffer | URL) => p === GSCONNECT_PATHS.linuxLocal;
     assert.equal(findGSConnect("linux", GSCONNECT_PATHS, exists), GSCONNECT_PATHS.linuxLocal);
   });
 
