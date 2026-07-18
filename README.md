@@ -9,12 +9,18 @@ Notification plugin for [opencode](https://opencode.ai). Sends a notification wh
 
 ## Install
 
-Copy `.opencode/plugin/notify.ts` and `opencode.json` into your project root. Restart opencode.
+```bash
+npm install
+npm run build
+```
+
+Copy `dist/notify.js` and `opencode.json` into your project root. Restart opencode.
 
 ## Development
 
 ```bash
 npm install    # install dependencies
+npm run build  # bundle plugin to dist/notify.js
 npm test       # run tests
 npm run lint   # check for lint errors
 ```

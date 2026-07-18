@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
-    ["./.opencode/plugin/notify.ts", { "desktop": true, "phone": true }]
+    ["./dist/notify.js", { "desktop": true, "phone": true }]
   ]
 }

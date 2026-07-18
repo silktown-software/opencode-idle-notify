@@ -8,6 +8,8 @@ opencode-notify is an opencode plugin that sends desktop and phone notifications
 
 - `opencode.json` — plugin config with options
 - `.opencode/plugin/notify.ts` — plugin source
+- `core.ts` — pure logic for testability
+- `dist/notify.js` — bundled output
 
 ## Conventions
 

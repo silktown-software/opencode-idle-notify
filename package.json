@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "build": "esbuild .opencode/plugin/notify.ts --bundle --platform=node --format=esm --outfile=dist/notify.js",
     "test": "node --import tsx --test *.test.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
@@ -12,6 +13,8 @@
     "@opencode-ai/plugin": "latest",
     "@opencode-ai/sdk": "latest",
     "@stylistic/eslint-plugin": "^5.10.0",
+    "@types/node": "^26.1.1",
+    "esbuild": "^0.25.0",
     "eslint": "^9.0.0",
     "tsx": "^4.0.0",
     "typescript": "^5.0.0",
