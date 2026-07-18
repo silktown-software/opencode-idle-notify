@@ -1,8 +1,8 @@
-# opencode-notify
+# opencode notify
 
-Notification plugin for [opencode](https://opencode.ai). Sends a desktop and/or phone notification when the assistant finishes a task. Cancels notification if you press Escape mid-task.
+Notification plugin for [opencode](https://opencode.ai). Sends a desktop and/or phone notification when the assistant finishes a task.
 
-Works on Linux, macOS, and Windows.
+It has been testing on Arch Linux.
 
 ## Requirements
 
@@ -58,7 +58,7 @@ npm run lint:fix # auto-fix lint errors
 
 | Platform | Method | Install |
 | -------- | ------ | ------- |
-| Linux | `notify-send` | `sudo apt install libnotify-bin` |
+| Linux | `notify-send` | `libnotify` |
 | macOS | `osascript` | Built-in |
 | Windows | PowerShell toast | Built-in |
 
@@ -66,33 +66,22 @@ npm run lint:fix # auto-fix lint errors
 
 The plugin uses KDE Connect to send notifications to your phone. Install the [KDE Connect](https://play.google.com/store/apps/details?id=org.kde.kdeconnect) app on Android or [KDE Connect](https://apps.apple.com/us/app/kde-connect/id1580245991) on iOS.
 
-#### Linux (tested)
+#### Linux
 
-GSConnect (GNOME) or KDE Connect (KDE Plasma):
-
-1. Install GSConnect: `sudo apt install gnome-shell-extension-gsconnect` or from [GNOME Extensions](https://extensions.gnome.org/extension/1319/gsconnect/)
-2. Pair your phone via GSConnect settings
-3. Enable the **Notification** plugin in the KDE Connect app on your phone
-
-If GSConnect is not found, falls back to `kdeconnect-cli` (`sudo apt install kdeconnect`).
+KDE Connect and GSConnect Gnome Extension are available for all major distributions and can be installed via your package manager.
 
 #### macOS (experimental, untested)
 
-Install `konnect` via Homebrew:
-
-```bash
-brew install konnect
-```
-
-Or compile KDE Connect from source.
+Install [KDE Connect](https://kdeconnect.kde.org/download.html).
 
 #### Windows (experimental, untested)
 
-Install KDE Connect from the [Microsoft Store](https://apps.microsoft.com/store/detail/kde-connect/9N93MRMSXBF0). Ensure `kdeconnect-cli` is in your PATH.
+Install [KDE Connect](https://kdeconnect.kde.org/download.html). 
+Ensure `kdeconnect-cli` is in your PATH.
 
 ## Troubleshooting
 
-- **No desktop notification**: ensure `notify-send` is installed (Linux) or check system notification settings
-- **No phone notification**: verify the Notification plugin is enabled in KDE Connect on your phone
+- **No desktop notification**: ensure `notify-send` is installed (Linux) or check system notification settings.
+- **No phone notification**: verify the Notification plugin is enabled in KDE Connect on your phone.
 - **Phone not found**: ensure your phone and computer are on the same network and paired
 - **Enable debug logging**: set `"debug": true` in options and check `/tmp/opencode-notify.log`
