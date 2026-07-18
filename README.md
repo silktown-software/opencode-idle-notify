@@ -1,6 +1,8 @@
 # opencode-notify
 
-Notification plugin for [opencode](https://opencode.ai). Sends a notification when the assistant finishes a task. Works on Linux, macOS, and Windows.
+Notification plugin for [opencode](https://opencode.ai). Sends a desktop and/or phone notification when the assistant finishes a task. Cancels notification if you press Escape mid-task.
+
+Works on Linux, macOS, and Windows.
 
 ## Requirements
 
@@ -14,20 +16,11 @@ npm install
 npm run build
 ```
 
-Copy `.opencode/plugin/notify.js` and `opencode.json` into your project root. Restart opencode.
-
-## Development
-
-```bash
-npm install    # install dependencies
-npm run build  # bundle plugin to .opencode/plugin/notify.js
-npm test       # run tests
-npm run lint   # check for lint errors
-```
+Copy `.opencode/plugin/notify.js` into your project's `.opencode/plugin/` directory. Restart opencode.
 
 ## Options
 
-Configure in `opencode.json`:
+Configure in `opencode.json` (only needed to change defaults):
 
 ```json
 {
@@ -47,6 +40,16 @@ To disable one, set it to `false`:
 
 ```json
 ["./.opencode/plugin/notify.js", { "desktop": false, "phone": true }]
+```
+
+## Development
+
+```bash
+npm install      # install dependencies
+npm run build    # bundle plugin to .opencode/plugin/notify.js
+npm test         # run tests
+npm run lint     # check for lint errors
+npm run lint:fix # auto-fix lint errors
 ```
 
 ## Platform Support
