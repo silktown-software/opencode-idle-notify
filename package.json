@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "esbuild .opencode/plugin/notify.ts --bundle --platform=node --format=esm --outfile=dist/notify.js",
+    "build": "esbuild .opencode/plugin/notify.ts --bundle --platform=node --format=esm --outfile=.opencode/plugin/notify.js",
     "test": "node --import tsx --test *.test.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"

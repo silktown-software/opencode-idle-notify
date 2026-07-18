@@ -14,7 +14,7 @@ npm install
 npm run build
 ```
 
-Copy `dist/notify.js` and `opencode.json` into your project root. Restart opencode.
+Copy `.opencode/plugin/notify.js` and `opencode.json` into your project root. Restart opencode.
 
 ## Development
 
