@@ -1,2 +1,4 @@
 node_modules/
+dist/
 .opencode/plugin/notify.js
+.opencode/node_modules/

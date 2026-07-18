@@ -49,16 +49,20 @@ function log(msg, debug) {
 }
 var platform = process.platform;
 var GSCONNECT = findGSConnect(platform);
+var desktopCommands = {
+  darwin: () => exec(`osascript -e 'display notification "Task completed" with title "OpenCode"'`),
+  win32: () => exec(
+    `powershell -Command "[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null; [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null; $template = '<toast><visual><binding template="ToastGeneric"><text>OpenCode</text><text>Task completed</text></binding></visual></toast>'; $xml = New-Object Windows.Data.Xml.Dom.XmlDocument; $xml.LoadXml($template); $toast = [Windows.UI.Notifications.ToastNotification]::new($xml); [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('OpenCode').Show($toast)"`
+  ),
+  linux: () => exec('notify-send "OpenCode" "Task completed"')
+};
+var phoneHandlers = {
+  darwin: (message) => exec(`konnect notification --title "OpenCode" --text "${message}"`),
+  win32: (message) => exec(`kdeconnect-cli --ping-msg "OpenCode: ${message}"`),
+  linux: (message) => exec(`kdeconnect-cli --ping-msg "OpenCode: ${message}"`)
+};
 function sendDesktop() {
-  if (platform === "darwin") {
-    exec(`osascript -e 'display notification "Task completed" with title "OpenCode"'`);
-  } else if (platform === "win32") {
-    exec(
-      `powershell -Command "[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null; [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null; $template = '<toast><visual><binding template="ToastGeneric"><text>OpenCode</text><text>Task completed</text></binding></visual></toast>'; $xml = New-Object Windows.Data.Xml.Dom.XmlDocument; $xml.LoadXml($template); $toast = [Windows.UI.Notifications.ToastNotification]::new($xml); [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('OpenCode').Show($toast)"`
-    );
-  } else {
-    exec('notify-send "OpenCode" "Task completed"');
-  }
+  desktopCommands[platform]?.();
 }
 function sendPhone(message, debug) {
   if (GSCONNECT) {
@@ -66,15 +70,9 @@ function sendPhone(message, debug) {
     exec(
       `sh -c '${GSCONNECT} -d $(${GSCONNECT} -a) --notification="OpenCode" --notification-appname="opencode" --notification-body="${message}" --notification-id="opencode"'`
     );
-  } else if (platform === "win32") {
-    log("Using kdeconnect-cli (Windows)", debug);
-    exec(`kdeconnect-cli --ping-msg "OpenCode: ${message}"`);
-  } else if (platform === "darwin") {
-    log("Using konnect (macOS)", debug);
-    exec(`konnect notification --title "OpenCode" --text "${message}"`);
   } else {
-    log("Using kdeconnect-cli (Linux)", debug);
-    exec(`kdeconnect-cli --ping-msg "OpenCode: ${message}"`);
+    log(`Using ${platform === "darwin" ? "konnect" : "kdeconnect-cli"} (${platform})`, debug);
+    phoneHandlers[platform]?.(message);
   }
 }
 function notify(desktop, phone, debug) {

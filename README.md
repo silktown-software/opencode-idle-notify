@@ -20,7 +20,7 @@ Copy `.opencode/plugin/notify.js` and `opencode.json` into your project root. Re
 
 ```bash
 npm install    # install dependencies
-npm run build  # bundle plugin to dist/notify.js
+npm run build  # bundle plugin to .opencode/plugin/notify.js
 npm test       # run tests
 npm run lint   # check for lint errors
 ```
@@ -32,7 +32,7 @@ Configure in `opencode.json`:
 ```json
 {
   "plugin": [
-    ["./.opencode/plugin/notify.ts", { "desktop": true, "phone": true }]
+    ["./.opencode/plugin/notify.js", { "desktop": true, "phone": true }]
   ]
 }
 ```
@@ -46,7 +46,7 @@ Configure in `opencode.json`:
 To disable one, set it to `false`:
 
 ```json
-["./.opencode/plugin/notify.ts", { "desktop": false, "phone": true }]
+["./.opencode/plugin/notify.js", { "desktop": false, "phone": true }]
 ```
 
 ## Platform Support
