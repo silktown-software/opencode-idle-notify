@@ -1,8 +1,8 @@
-// .opencode/plugin/notify.ts
+// src/notify.ts
 import { exec } from "child_process";
 import { appendFileSync } from "fs";
 
-// core.ts
+// src/core.ts
 import { existsSync } from "fs";
 var GSCONNECT_PATHS = {
   linux: "/usr/share/gnome-shell/extensions/gsconnect@andyholmes.github.io/service/daemon.js",
@@ -39,7 +39,7 @@ function shouldNotify(status, state) {
   return false;
 }
 
-// .opencode/plugin/notify.ts
+// src/notify.ts
 var LOG = "/tmp/opencode-notify.log";
 function log(msg, debug) {
   if (debug) {

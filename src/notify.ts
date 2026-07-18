@@ -1,7 +1,7 @@
 import type { Plugin } from "@opencode-ai/plugin";
 import { exec } from "child_process";
 import { appendFileSync } from "fs";
-import { findGSConnect, createNotificationState, shouldNotify } from "../../core.js";
+import { findGSConnect, createNotificationState, shouldNotify } from "./core.js";
 
 const LOG = "/tmp/opencode-notify.log";
 
