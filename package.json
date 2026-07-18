@@ -1,6 +1,6 @@
 {
   "name": "opencode-notify",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "build": "esbuild src/notify.ts --bundle --platform=node --format=esm --outfile=.opencode/plugin/notify.js",
