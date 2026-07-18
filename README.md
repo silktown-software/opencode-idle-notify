@@ -1,10 +1,23 @@
 # opencode-notify
 
-Notification plugin for [opencode](https://opencode.ai). Sends a notification when the assistant finishes a task.
+Notification plugin for [opencode](https://opencode.ai). Sends a notification when the assistant finishes a task. Works on Linux, macOS, and Windows.
+
+## Requirements
+
+- Node.js 20+ (for built-in test runner with `--import tsx`)
+- opencode 1.18+
 
 ## Install
 
 Copy `.opencode/plugin/notify.ts` and `opencode.json` into your project root. Restart opencode.
+
+## Development
+
+```bash
+npm install    # install dependencies
+npm test       # run tests
+npm run lint   # check for lint errors
+```
 
 ## Options
 
@@ -20,8 +33,9 @@ Configure in `opencode.json`:
 
 | Option   | Default | Description                              |
 | -------- | ------- | ---------------------------------------- |
-| `desktop` | `true`  | Send desktop notification via `notify-send` |
-| `phone`   | `true`  | Send notification to phone via GSConnect or KDE Connect |
+| `desktop` | `true`  | Send desktop notification |
+| `phone`   | `true`  | Send notification to phone via KDE Connect |
+| `debug`   | `false` | Log events to `/tmp/opencode-notify.log` |
 
 To disable one, set it to `false`:
 
@@ -29,33 +43,47 @@ To disable one, set it to `false`:
 ["./.opencode/plugin/notify.ts", { "desktop": false, "phone": true }]
 ```
 
-## Requirements
+## Platform Support
 
-### Desktop
+### Desktop Notifications
 
-`notify-send` (usually preinstalled on GNOME).
+| Platform | Method | Install |
+| -------- | ------ | ------- |
+| Linux | `notify-send` | `sudo apt install libnotify-bin` |
+| macOS | `osascript` | Built-in |
+| Windows | PowerShell toast | Built-in |
 
-### Phone (GSConnect)
+### Phone Notifications (KDE Connect)
 
-The plugin auto-detects GSConnect at these paths:
-- `/usr/share/gnome-shell/extensions/gsconnect@andyholmes.github.io/service/daemon.js`
-- `~/.local/share/gnome-shell/extensions/gsconnect@andyholmes.github.io/service/daemon.js`
+The plugin uses KDE Connect to send notifications to your phone. Install the [KDE Connect](https://play.google.com/store/apps/details?id=org.kde.kdeconnect) app on Android or [KDE Connect](https://apps.apple.com/us/app/kde-connect/id1580245991) on iOS.
 
-To set up GSConnect:
-1. Install the [GSConnect GNOME Extension](https://extensions.gnome.org/extension/1319/gsconnect/)
-2. Install the [KDE Connect](https://play.google.com/store/apps/details?id=org.kde.kdeconnect) app on your Android phone
-3. Open GSConnect settings in GNOME and pair with your phone
-4. In the KDE Connect app, tap your paired computer and enable the **Notification** plugin
+#### Linux (tested)
 
-### Phone (KDE Connect fallback)
+GSConnect (GNOME) or KDE Connect (KDE Plasma):
 
-If GSConnect is not found, the plugin falls back to `kdeconnect-cli`:
-- Install: `sudo apt install kdeconnect`
-- Pair your device through KDE Connect settings
-- Enable the **Notification** plugin on your phone
+1. Install GSConnect: `sudo apt install gnome-shell-extension-gsconnect` or from [GNOME Extensions](https://extensions.gnome.org/extension/1319/gsconnect/)
+2. Pair your phone via GSConnect settings
+3. Enable the **Notification** plugin in the KDE Connect app on your phone
+
+If GSConnect is not found, falls back to `kdeconnect-cli` (`sudo apt install kdeconnect`).
+
+#### macOS (experimental, untested)
+
+Install `konnect` via Homebrew:
+
+```bash
+brew install konnect
+```
+
+Or compile KDE Connect from source.
+
+#### Windows (experimental, untested)
+
+Install KDE Connect from the [Microsoft Store](https://apps.microsoft.com/store/detail/kde-connect/9N93MRMSXBF0). Ensure `kdeconnect-cli` is in your PATH.
 
 ## Troubleshooting
 
-- **No desktop notification**: ensure `notify-send` is installed (`sudo apt install libnotify-bin`)
+- **No desktop notification**: ensure `notify-send` is installed (Linux) or check system notification settings
 - **No phone notification**: verify the Notification plugin is enabled in KDE Connect on your phone
-- **Phone not found**: check that your phone and computer are on the same network
+- **Phone not found**: ensure your phone and computer are on the same network and paired
+- **Enable debug logging**: set `"debug": true` in options and check `/tmp/opencode-notify.log`

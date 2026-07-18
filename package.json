@@ -1,0 +1,19 @@
+{
+  "name": "opencode-notify",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --import tsx --test *.test.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0",
+    "@opencode-ai/plugin": "latest",
+    "@opencode-ai/sdk": "latest",
+    "eslint": "^9.0.0",
+    "@eslint/js": "^9.0.0",
+    "typescript-eslint": "^8.0.0"
+  }
+}
