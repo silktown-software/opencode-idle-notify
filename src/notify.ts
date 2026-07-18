@@ -38,10 +38,11 @@ function sendPhone(message: string, debug: boolean) {
     exec(
       `sh -c '${GSCONNECT} -d $(${GSCONNECT} -a) --notification="OpenCode" --notification-appname="opencode" --notification-body="${message}" --notification-id="opencode"'`
     );
-  } else {
-    log(`Using ${platform === "darwin" ? "konnect" : "kdeconnect-cli"} (${platform})`, debug);
-    phoneHandlers[platform]?.(message);
+    return;
   }
+
+  log(`Using ${platform === "darwin" ? "konnect" : "kdeconnect-cli"} (${platform})`, debug);
+  phoneHandlers[platform]?.(message);
 }
 
 function notify(desktop: boolean, phone: boolean, debug: boolean) {
@@ -67,16 +68,23 @@ export default (async (_, options) => {
     event: async ({ event }) => {
       log(`Event: ${event.type} ${JSON.stringify(event)}`, debug);
 
-      if (event.type === "session.status") {
-        const status = event.properties.status.type;
-        if (status === "busy") {
-          state.reset();
-        }
-        if (shouldNotify(status, state)) {
-          notify(desktop, phone, debug);
-        }
-      } else if (event.type === "session.error") {
+      if (event.type !== "session.status" && event.type !== "session.error") {
+        return;
+      }
+
+      if (event.type === "session.error") {
         state.markCancelled();
+        return;
+      }
+
+      const status = event.properties.status.type;
+      if (status === "busy") {
+        state.reset();
+        return;
+      }
+
+      if (shouldNotify(status, state)) {
+        notify(desktop, phone, debug);
       }
     },
   };
